@@ -32,12 +32,12 @@ main = do
 type Message k = List k
 type Dictionary k v = Map k v
 
--- TODO: abstract over String
+-- TODO: abstract over String and Int
 --decipher :: forall k. (Ord k, Show k, Semiring k) => Dictionary k String -> Message k -> String
 decipher :: Dictionary Int String -> Message Int -> String
 decipher d m = snd t
   where
-    max :: Int -> Int -> Int
+    max :: forall a. (Ord a) => a -> a -> a
     max x y | x >= y    = x
             | otherwise = y
     maxDg = foldl max 0 $ keys d
@@ -46,6 +46,8 @@ decipher d m = snd t
 toNumber :: forall f a. (Foldable f, Semiring a) => f a -> a
 toNumber xs = foldl add zero xs
 
+-- TODO: abstract over String and Int
+-- TODO: search in dictionary
 -- Search cs list options in dict
 -- returns the finded code as a pair (length key, value)
 findCode :: Dictionary Int String -> Message Int -> Tuple Int String
@@ -60,7 +62,8 @@ findCode d cs =
 -- d dict
 -- m current msg
 -- take tn
--- accu String
+-- accumulator String
+-- TODO: abstract over String and Int
 fx :: Dictionary Int String -> Message Int -> Int -> String -> Tuple Int String
 fx d m tn acc =
   case mpen of
